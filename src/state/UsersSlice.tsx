@@ -1,5 +1,6 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { api } from "../services/http";
 
 export interface InitialType {
   loading: boolean;
@@ -25,10 +26,10 @@ export const fetchUserList = createAsyncThunk<UserItem[]>(
   'users/fetchUserList',
   async () => {
     try {
-      const response = await axios.get('http://localhost:3000/users')
-      return response.data
+      const response = await api.get('/users');
+      return response.data;
     } catch (error) {
-      console.error('error fetching userList', error)
+      console.error('error fetching userList', error);
       throw error;
     }
   }
@@ -38,33 +39,33 @@ export const postUser = createAsyncThunk<UserItem, UserItem>(
   'users/addUser',
   async (newUser) => {
     try {
-      const response = await axios.post('http://localhost:3000/users', newUser)
-      return response.data
+      const response = await api.post('/users', newUser);
+      return response.data;
     } catch (error) {
-      console.error('error creating user', error)
-      throw error
+      console.error('error creating user', error);
+      throw error;
     }
   }
-)
+);
 
 export const deleteUserFromServer = createAsyncThunk<void, number>(
   'users/deleteUser',
   async (userId) => {
     try {
-      await axios.delete(`http://localhost:3000/users/${userId}`)
+      await api.delete(`/users/${userId}`);
     } catch (error) {
-      console.log('error deleting user', error)
-      throw error
+      console.log('error deleting user', error);
+      throw error;
     }
   }
-)
+);
 
 export const updateUsersOnServer = createAsyncThunk<UserItem, UserItem>(
   'users/updateUsersOnServer',
   async (updatedUser) => {
     try {
-      const response = await axios.patch(`http://localhost:3000/users/${updatedUser.id}`, updatedUser);
-      return response.data;  // Assuming the response contains the updated user data
+      const response = await api.patch(`/users/${updatedUser.id}`, updatedUser);
+      return response.data;
     } catch (error) {
       console.error('failed updating a user !');
       throw error;
