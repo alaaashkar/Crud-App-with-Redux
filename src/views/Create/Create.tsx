@@ -13,7 +13,9 @@ export const Create = () => {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault()
-    const id = users[users.length - 1].id + 1;
+    const lastUserId = users.userList?.length > 0 ? users.userList[users.userList.length - 1].id : 0
+
+    const id = lastUserId + 1;
 
     dispatch(addUser({
       id,

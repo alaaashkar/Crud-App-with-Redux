@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import { RootState } from "../../state/store";
-import { User, updateUser } from "../../state/UsersSlice";
+import { UserItem, updateUser } from "../../state/UsersSlice";
 
 
 export const Update = () => {
@@ -11,9 +11,9 @@ export const Update = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  let selectedUser: User[] = []
+  let selectedUser: UserItem[] = []
   if (id) {
-    selectedUser = users.filter(user => user.id === +id)
+    selectedUser = users.userList.filter(user => user.id === +id)
   }
 
   const { name, email } = selectedUser[0]
