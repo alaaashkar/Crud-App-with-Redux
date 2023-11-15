@@ -3,13 +3,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import { AppDispatch, RootState } from "../../state/store";
 import { UserItem, updateUser, updateUsersOnServer } from "../../state/UsersSlice";
-
+import { ClipLoader } from 'react-spinners';
 
 export const Update = () => {
   const { id } = useParams()
   const users = useSelector((state: RootState) => state.users)
   const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
+  const [isLoading, setisLoading] = useState(false)
 
   let selectedUser: UserItem[] = []
   if (id) {
@@ -29,6 +30,13 @@ export const Update = () => {
         email: uEmail
       }))
 
+      setisLoading(true)
+
+      setTimeout(() => {
+        setisLoading(false)
+        navigate('/')
+      }, 500);
+
       dispatch(updateUsersOnServer(
         {
           id: +id,
@@ -37,7 +45,7 @@ export const Update = () => {
         }
       ))
     }
-    navigate('/')
+
   }
 
   return (
@@ -56,7 +64,11 @@ export const Update = () => {
             <input value={uEmail} onChange={e => setUEmail(e.target.value)} type="text" name="email" className="form-control" placeholder="enter email" />
           </div><br />
 
-          <button className="btn btn-info">Submit</button>
+          {isLoading ? (
+            <ClipLoader color="#36d7b7" />
+          ) : (
+            <button className="btn btn-info">Submit</button>
+          )}
         </form>
       </div>
     </div>
