@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
-import { RootState } from "../../state/store";
-import { UserItem, updateUser } from "../../state/UsersSlice";
+import { AppDispatch, RootState } from "../../state/store";
+import { UserItem, updateUser, updateUsersOnServer } from "../../state/UsersSlice";
 
 
 export const Update = () => {
   const { id } = useParams()
   const users = useSelector((state: RootState) => state.users)
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
 
   let selectedUser: UserItem[] = []
@@ -28,6 +28,14 @@ export const Update = () => {
         name: uName,
         email: uEmail
       }))
+
+      dispatch(updateUsersOnServer(
+        {
+          id: +id,
+          name: uName,
+          email: uEmail
+        }
+      ))
     }
     navigate('/')
   }

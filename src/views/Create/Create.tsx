@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import { addUser } from "../../state/UsersSlice";
+import { addUser, postUser } from "../../state/UsersSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../state/store";
+import { AppDispatch, RootState } from "../../state/store";
 import { useNavigate } from 'react-router-dom';
 
 export const Create = () => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const users = useSelector((state: RootState) => state.users)
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
   const handleSubmit = (event: React.FormEvent) => {
@@ -22,6 +22,8 @@ export const Create = () => {
       name,
       email,
     }))
+
+    dispatch(postUser({ id, name, email }))
 
     navigate('/')
   }

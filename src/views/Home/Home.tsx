@@ -1,16 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from '../../state/store'
+import { AppDispatch, RootState } from '../../state/store'
 import { Link } from 'react-router-dom';
-import { deleteUser } from "../../state/UsersSlice";
+import { deleteUser, deleteUserFromServer, fetchUserList } from "../../state/UsersSlice";
 
 export const Home = () => {
   const users = useSelector((state: RootState) => state.users)
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<AppDispatch>()
 
   const handleDelete = (id: number) => {
-    dispatch(deleteUser({ id }))
+    dispatch(deleteUser(id))
+
+    dispatch(deleteUserFromServer(id))
   }
+
+  useEffect(() => {
+    dispatch(fetchUserList())
+  }, [])
 
   return (
     < div className="container" >

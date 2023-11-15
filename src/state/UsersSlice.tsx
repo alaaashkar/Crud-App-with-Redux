@@ -34,6 +34,44 @@ export const fetchUserList = createAsyncThunk<UserItem[]>(
   }
 );
 
+export const postUser = createAsyncThunk<UserItem, UserItem>(
+  'users/addUser',
+  async (newUser) => {
+    try {
+      const response = await axios.post('http://localhost:3000/users', newUser)
+      return response.data
+    } catch (error) {
+      console.error('error creating user', error)
+      throw error
+    }
+  }
+)
+
+export const deleteUserFromServer = createAsyncThunk<void, number>(
+  'users/deleteUser',
+  async (userId) => {
+    try {
+      await axios.delete(`http://localhost:3000/users/${userId}`)
+    } catch (error) {
+      console.log('error deleting user', error)
+      throw error
+    }
+  }
+)
+
+export const updateUsersOnServer = createAsyncThunk<UserItem, UserItem>(
+  'users/updateUsersOnServer',
+  async (updatedUser) => {
+    try {
+      const response = await axios.patch(`http://localhost:3000/users/${updatedUser.id}`, updatedUser);
+      return response.data;  // Assuming the response contains the updated user data
+    } catch (error) {
+      console.error('failed updating a user !');
+      throw error;
+    }
+  }
+);
+
 const usersSlice = createSlice({
   name: 'users',
   initialState,
@@ -49,8 +87,8 @@ const usersSlice = createSlice({
         updatingUser.email = email;
       }
     },
-    deleteUser: (state, action: PayloadAction<Pick <UserItem,'id'>>) => {
-      state.userList = state.userList.filter(user => user.id !== action.payload.id);
+    deleteUser: (state, action: PayloadAction<number>) => {
+      state.userList = state.userList.filter(user => user.id !== action.payload);
     }
   },
   extraReducers: (builder) => {
@@ -66,7 +104,46 @@ const usersSlice = createSlice({
       .addCase(fetchUserList.rejected, (state) => {
         state.loading = false;
         state.errMessage = 'Failed to fetch user list';
-      });
+      })
+      .addCase(postUser.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(postUser.fulfilled, (state, action: PayloadAction<UserItem>) => {
+        state.loading = false;
+        state.userList.push(action.payload)
+      })
+      .addCase(postUser.rejected, (state) => {
+        state.loading = false;
+        state.errMessage = "Failed to create user"
+      })
+      .addCase(deleteUserFromServer.pending, (state) => {
+        state.loading = true
+      })
+      .addCase(deleteUserFromServer.fulfilled, (state, action: PayloadAction<void, string, { arg: number; requestId: string; requestStatus: "fulfilled"; }, never>) => {
+        // Use the id from the action payload
+        const userId = action.meta.arg;
+        state.userList = state.userList.filter(user => user.id !== userId);
+        state.loading = false;
+      })
+      .addCase(deleteUserFromServer.rejected, (state) => {
+        state.loading = false;
+        state.errMessage = 'Failed to delete user';
+      })
+      .addCase(updateUsersOnServer.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateUsersOnServer.fulfilled, (state, action: PayloadAction<UserItem>) => {
+        state.loading = false;
+        const foundUser = state.userList.find(user => user.id === action.payload.id);
+        if (foundUser) {
+          foundUser.name = action.payload.name;
+          foundUser.email = action.payload.email;
+        }
+      })
+      .addCase(updateUsersOnServer.rejected, (state) => {
+        state.loading = false;
+        state.errMessage = 'Failed to update user';
+      })
   },
 });
 
