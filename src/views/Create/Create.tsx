@@ -34,28 +34,34 @@ export const Create = () => {
   }
 
   return (
-    <div className="d-flex w-100 vh-100 justify-content-center align-items-center">
-      <div className="w-50 border bg-secondary text-white p-5 ">
-        <h3>Add New User</h3>
+    <div className="container">
+      <div className="row justify-content-center align-items-center min-vh-100">
+        <div className="col-md-6">
+          <div className="border bg-secondary text-white p-5 ">
+            <h3 className="mb-4">Add New User</h3>
 
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label htmlFor="name">Name:</label>
-            <input onChange={e => setName(e.target.value)} type="text" name="name" className="form-control" placeholder="enter name" />
+            <form onSubmit={handleSubmit}>
+              <div className="mb-3">
+                <label htmlFor="name" className="form-label">Name:</label>
+                <input onChange={e => setName(e.target.value)} type="text" name="name" className="form-control" placeholder="Enter name" />
+              </div>
+
+              <div className="mb-3">
+                <label htmlFor="email" className="form-label">Email:</label>
+                <input onChange={e => setEmail(e.target.value)} type="text" name="email" className="form-control" placeholder="Enter email" />
+              </div>
+
+              <div className="mb-3">
+                {isLoading ? (
+                  <ClipLoader color="#36d7b7" />
+                ) : (
+                  <button type="submit" className="btn btn-info">Submit</button>
+                )}
+              </div>
+            </form>
           </div>
-
-          <div>
-            <label htmlFor="email">Email:</label>
-            <input onChange={e => setEmail(e.target.value)} type="text" name="email" className="form-control" placeholder="enter email" />
-          </div><br />
-
-          {isLoading ? (
-            <ClipLoader color="#36d7b7" />
-          ) : (
-            <button className="btn btn-info">Submit</button>
-          )}
-        </form>
+        </div>
       </div>
-    </div >
+    </div>
   )
 };

@@ -2,7 +2,12 @@
   "users": [
     {
       "id": 1,
-      "name": "dadasdasd",
+      "name": "adadas",
+      "email": "dassd"
+    },
+    {
+      "id": 2,
+      "name": "asdasd",
       "email": "asdasd"
     }
   ]
