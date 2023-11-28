@@ -1,6 +1,12 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { api } from "../services/http";
+import { addDoc, arrayUnion, collection, doc, getDoc, updateDoc } from "firebase/firestore";
+import { db } from "../firebase";
+import { auth } from "../firebase";
+
+console.log(auth);
+
 
 export interface InitialType {
   loading: boolean;
@@ -26,8 +32,10 @@ export const fetchUserList = createAsyncThunk<UserItem[]>(
   'users/fetchUserList',
   async () => {
     try {
-      const response = await api.get('/users');
-      return response.data;
+      const userDocRef = doc(db, 'users', auth.currentUser?.email || '');
+      const userDocSnapshot = await getDoc(userDocRef);
+      const existingDataArray = userDocSnapshot.data()?.data || [];
+      return existingDataArray;
     } catch (error) {
       console.error('error fetching userList', error);
       throw error;
@@ -35,26 +43,54 @@ export const fetchUserList = createAsyncThunk<UserItem[]>(
   }
 );
 
+
 export const postUser = createAsyncThunk<UserItem, UserItem>(
-  'users/addUser',
+  'users/postUser',
   async (newUser) => {
     try {
-      const response = await api.post('/users', newUser);
-      return response.data;
+      const { id, ...userWithoutId } = newUser;
+      const userDocRef = doc(db, 'users', auth.currentUser?.email || '');
+      console.log('userDocRef:', userDocRef)
+
+      const userDocSnapshot = await getDoc(userDocRef);
+      console.log('userDocSnapshot:', userDocSnapshot.data());
+
+      const existingDataArray = userDocSnapshot.data()?.data || [];
+      console.log('existingDataArray:', existingDataArray);
+
+      const customId = existingDataArray.length + 1;
+      console.log('customId:', customId);
+
+      await updateDoc(userDocRef, {
+        data: arrayUnion({ id: customId, ...userWithoutId }),
+      });
+
+      const updatedUser = { ...newUser, id: customId };
+
+      return updatedUser;
     } catch (error) {
-      console.error('error creating user', error);
+      console.error('Failed to add user document:', error);
       throw error;
     }
   }
 );
 
+
+
 export const deleteUserFromServer = createAsyncThunk<void, number>(
   'users/deleteUser',
   async (userId) => {
     try {
-      await api.delete(`/users/${userId}`);
+      const userDocRef = doc(db, 'users', auth.currentUser?.email || '')
+
+      const userDocSnapshot = await getDoc(userDocRef);
+      const existingDataArray = userDocSnapshot.data()?.data || [];
+
+      const updatedDataArray = existingDataArray.filter((user: { id: number; }) => user.id !== userId)
+
+      await updateDoc(userDocRef, { data: updatedDataArray });
     } catch (error) {
-      console.log('error deleting user', error);
+      console.error(error)
       throw error;
     }
   }
@@ -77,9 +113,9 @@ const usersSlice = createSlice({
   name: 'users',
   initialState,
   reducers: {
-    addUser: (state, action: PayloadAction<UserItem>) => {
-      state.userList.push(action.payload)
-    },
+    // addUser: (state, action: PayloadAction<UserItem>) => {
+    //   state.userList.push(action.payload)
+    // },
     updateUser: (state, action: PayloadAction<UserItem>) => {
       const { id, name, email } = action.payload;
       const updatingUser = state.userList.find(user => user.id === id)
@@ -90,44 +126,29 @@ const usersSlice = createSlice({
     },
     deleteUser: (state, action: PayloadAction<number>) => {
       state.userList = state.userList.filter(user => user.id !== action.payload);
-    }
+    },
+    resetUserState: (state) => {
+      state.loading = true;
+      state.userList = [];
+      state.userObj = null;
+      state.errMessage = '';
+    },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchUserList.pending, (state) => {
-        state.loading = true;
-      })
       .addCase(fetchUserList.fulfilled, (state, action: PayloadAction<UserItem[]>) => {
         state.loading = false;
         state.userList = action.payload;
         state.userObj = null;
-      })
-      .addCase(fetchUserList.rejected, (state) => {
-        state.loading = false;
-        state.errMessage = 'Failed to fetch user list';
       })
       .addCase(postUser.pending, (state) => {
         state.loading = true;
       })
       .addCase(postUser.fulfilled, (state, action: PayloadAction<UserItem>) => {
         state.loading = false;
-        state.userList.push(action.payload)
-      })
-      .addCase(postUser.rejected, (state) => {
-        state.loading = false;
-        state.errMessage = "Failed to create user"
-      })
-      .addCase(deleteUserFromServer.pending, (state) => {
-        state.loading = true
-      })
-      .addCase(deleteUserFromServer.fulfilled, (state, action: PayloadAction<void, string, { arg: number; requestId: string; requestStatus: "fulfilled"; }, never>) => {
-        // Use the id from the action payload
-        const userId = action.meta.arg;
-        state.userList = state.userList.filter(user => user.id !== userId);
-        state.loading = false;
+        state.userList.push(action.payload); // Update the user list after posting a new user
       })
       .addCase(deleteUserFromServer.rejected, (state) => {
-        state.loading = false;
         state.errMessage = 'Failed to delete user';
       })
       .addCase(updateUsersOnServer.pending, (state) => {
@@ -148,5 +169,5 @@ const usersSlice = createSlice({
   },
 });
 
-export const { addUser, updateUser, deleteUser } = usersSlice.actions;
+export const { updateUser, deleteUser, resetUserState } = usersSlice.actions;
 export const usersReducer = usersSlice.reducer;

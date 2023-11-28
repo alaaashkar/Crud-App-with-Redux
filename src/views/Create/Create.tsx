@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { addUser, postUser } from "../../state/UsersSlice";
+import { fetchUserList, postUser } from "../../state/UsersSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../state/store";
 import { useNavigate } from 'react-router-dom';
@@ -11,25 +11,13 @@ export const Create = () => {
   const users = useSelector((state: RootState) => state.users)
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const [isLoading, setisLoading] = useState(false)
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
     const lastUserId = users.userList?.length > 0 ? users.userList[users.userList.length - 1].id : 0
     const id = lastUserId + 1;
 
-    dispatch(addUser({
-      id,
-      name,
-      email,
-    }))
-
-    setisLoading(true)
-
-    setTimeout(() => {
-      setisLoading(false)
-      navigate('/')
-    }, 500);
+    navigate('/')
     dispatch(postUser({ id, name, email }))
   }
 
@@ -52,11 +40,7 @@ export const Create = () => {
               </div>
 
               <div className="mb-3">
-                {isLoading ? (
-                  <ClipLoader color="#36d7b7" />
-                ) : (
-                  <button type="submit" className="btn btn-info">Submit</button>
-                )}
+                <button type="submit" className="btn btn-info">Submit</button>
               </div>
             </form>
           </div>

@@ -1,0 +1,16 @@
+.container-fluid {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh !important;
+}
+
+form {
+  width: 300px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+}

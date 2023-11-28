@@ -1,26 +1,22 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from '../../state/store';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { deleteUser, deleteUserFromServer, fetchUserList } from "../../state/UsersSlice";
 import { ClipLoader } from 'react-spinners';
+import './Home.css';
 
 interface DeleteConfirmationModalProps {
   onDelete: (id: number) => void;
   onCancel: () => void;
 }
 
+
 export const Home = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(0);
-
   const users = useSelector((state: RootState) => state.users);
   const dispatch = useDispatch<AppDispatch>();
-
-  useEffect(() => {
-    dispatch(fetchUserList());
-  }, []);
 
   const handleDelete = (id: number) => {
     setShowModal(true);
@@ -52,7 +48,7 @@ export const Home = () => {
   return (
     <>
       <div className="container">
-        <h2>Crud App with JSON Server</h2>
+     
         {users.loading ? (
           <ClipLoader color="#36d7b7" />
         ) : (
