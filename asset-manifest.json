@@ -1,15 +1,17 @@
 {
   "files": {
-    "main.css": "/crud-app-with-redux/static/css/main.fa3e6c88.css",
-    "main.js": "/crud-app-with-redux/static/js/main.2292903b.js",
+    "main.css": "/crud-app-with-redux/static/css/main.0db2a21d.css",
+    "main.js": "/crud-app-with-redux/static/js/main.729a0695.js",
     "static/js/787.d4aba7ab.chunk.js": "/crud-app-with-redux/static/js/787.d4aba7ab.chunk.js",
+    "static/media/AdobeStock_292103219.jpeg": "/crud-app-with-redux/static/media/AdobeStock_292103219.641e2122faec782e36db.jpeg",
+    "static/media/Inter-Regular.ttf": "/crud-app-with-redux/static/media/Inter-Regular.9ca9ba81e9dcaa12b3a1.ttf",
     "index.html": "/crud-app-with-redux/index.html",
-    "main.fa3e6c88.css.map": "/crud-app-with-redux/static/css/main.fa3e6c88.css.map",
-    "main.2292903b.js.map": "/crud-app-with-redux/static/js/main.2292903b.js.map",
+    "main.0db2a21d.css.map": "/crud-app-with-redux/static/css/main.0db2a21d.css.map",
+    "main.729a0695.js.map": "/crud-app-with-redux/static/js/main.729a0695.js.map",
     "787.d4aba7ab.chunk.js.map": "/crud-app-with-redux/static/js/787.d4aba7ab.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.fa3e6c88.css",
-    "static/js/main.2292903b.js"
+    "static/css/main.0db2a21d.css",
+    "static/js/main.729a0695.js"
   ]
 }
