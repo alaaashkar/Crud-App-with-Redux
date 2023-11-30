@@ -1,9 +1,8 @@
 import { FormEvent, useState } from 'react';
 import './Signup.css'
-import { auth, db } from '../../firebase'
+import { auth } from '../../firebase'
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
-import { getFirestore, doc, setDoc, Firestore } from 'firebase/firestore';
 
 export const SignUp = () => {
   const [email, setEmail] = useState('')
@@ -16,14 +15,6 @@ export const SignUp = () => {
 
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password)
-      const uid = userCredential.user.uid
-      const firestore: Firestore = getFirestore()
-
-      await setDoc(doc(firestore, 'users', email), {
-        uid,
-        email,
-        data: []
-      });
 
       navigate('/')
 

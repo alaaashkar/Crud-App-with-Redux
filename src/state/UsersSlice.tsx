@@ -1,7 +1,7 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { api } from "../services/http";
-import { addDoc, arrayUnion, collection, doc, getDoc, updateDoc } from "firebase/firestore";
+import { addDoc, arrayUnion, collection, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { auth } from "../firebase";
 
@@ -50,22 +50,16 @@ export const postUser = createAsyncThunk<UserItem, UserItem>(
   'users/postUser',
   async (newUser) => {
     try {
-      const { id, ...userWithoutId } = newUser;
       const userDocRef = doc(db, 'users', auth.currentUser?.email || '');
 
-      const userDocSnapshot = await getDoc(userDocRef);
+      setDoc(userDocRef, {
+        data: arrayUnion(newUser)
+      }, { merge: true }
+      )
 
-      const existingDataArray = userDocSnapshot.data()?.data || [];
+      return newUser
 
-      const customId = existingDataArray.length + 1;
 
-      await updateDoc(userDocRef, {
-        data: arrayUnion({ id: customId, ...userWithoutId }),
-      });
-
-      const updatedUser = { ...newUser, id: customId };
-
-      return updatedUser;
     } catch (error) {
       console.error('Failed to add user document:', error);
       throw error;
