@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Navbar } from "../Navbar/Navbar";
 import { Outlet } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -16,9 +16,11 @@ export const Layout = () => {
 
   return (
     <div className="App">
-      <Navbar />
+      <Navbar
+      />
 
-      <Outlet />
+      <Outlet
+      />
     </div>
   )
 };

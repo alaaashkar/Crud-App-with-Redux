@@ -1,0 +1,5 @@
+.create-page {
+  overflow: hidden !important;
+  height: calc(100vh - 38px);
+  /* Adjust the value based on your navigation bar height */
+}

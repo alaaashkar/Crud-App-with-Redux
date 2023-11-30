@@ -1,3 +1,16 @@
+
+@font-face {
+  font-family: 'Inter';
+  src: url(./assets/fonts/Inter/static/Inter-Regular.ttf);
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap');
+
+#root {
+  height: 100vh !important;
+    --animate-duration: 0.2s !important;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -6,8 +19,11 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   height: 100vh;
-  background-color: rgb(235, 235, 235) !important;
-
+  /* background: rgb(2, 0, 36);
+  background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(108, 0, 161, 1) 35%, rgba(0, 212, 255, 1) 100%); */
+  background-image: url('./assets/images/AdobeStock_292103219.jpeg');
+  background-position: top;
+  font-family: 'Poppins' !important;
 }
 
 code {

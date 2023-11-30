@@ -13,6 +13,7 @@ export interface InitialType {
   userList: UserItem[];
   userObj?: UserItem | null;
   errMessage: string;
+  isLoading: boolean
 }
 
 export interface UserItem {
@@ -25,7 +26,8 @@ const initialState: InitialType = {
   loading: true,
   userList: [],
   userObj: null,
-  errMessage: ''
+  errMessage: '',
+  isLoading: false
 }
 
 export const fetchUserList = createAsyncThunk<UserItem[]>(
@@ -50,16 +52,12 @@ export const postUser = createAsyncThunk<UserItem, UserItem>(
     try {
       const { id, ...userWithoutId } = newUser;
       const userDocRef = doc(db, 'users', auth.currentUser?.email || '');
-      console.log('userDocRef:', userDocRef)
 
       const userDocSnapshot = await getDoc(userDocRef);
-      console.log('userDocSnapshot:', userDocSnapshot.data());
 
       const existingDataArray = userDocSnapshot.data()?.data || [];
-      console.log('existingDataArray:', existingDataArray);
 
       const customId = existingDataArray.length + 1;
-      console.log('customId:', customId);
 
       await updateDoc(userDocRef, {
         data: arrayUnion({ id: customId, ...userWithoutId }),
@@ -74,8 +72,6 @@ export const postUser = createAsyncThunk<UserItem, UserItem>(
     }
   }
 );
-
-
 
 export const deleteUserFromServer = createAsyncThunk<void, number>(
   'users/deleteUser',
@@ -100,8 +96,21 @@ export const updateUsersOnServer = createAsyncThunk<UserItem, UserItem>(
   'users/updateUsersOnServer',
   async (updatedUser) => {
     try {
-      const response = await api.patch(`/users/${updatedUser.id}`, updatedUser);
-      return response.data;
+      const userDocRef = doc(db, 'users', auth.currentUser?.email || '');
+      const userDocSnapshot = await getDoc(userDocRef);
+      const existingDataArray = userDocSnapshot.data()?.data || [];
+
+      const updatedDataArray = existingDataArray.map((user: { id: number }) => {
+        if (user.id === updatedUser.id) {
+          return { ...user, ...updatedUser }
+        } else {
+          return user
+        }
+      })
+
+      await updateDoc(userDocRef, { data: updatedDataArray })
+
+      return updatedUser
     } catch (error) {
       console.error('failed updating a user !');
       throw error;
@@ -113,17 +122,6 @@ const usersSlice = createSlice({
   name: 'users',
   initialState,
   reducers: {
-    // addUser: (state, action: PayloadAction<UserItem>) => {
-    //   state.userList.push(action.payload)
-    // },
-    updateUser: (state, action: PayloadAction<UserItem>) => {
-      const { id, name, email } = action.payload;
-      const updatingUser = state.userList.find(user => user.id === id)
-      if (updatingUser) {
-        updatingUser.name = name;
-        updatingUser.email = email;
-      }
-    },
     deleteUser: (state, action: PayloadAction<number>) => {
       state.userList = state.userList.filter(user => user.id !== action.payload);
     },
@@ -133,6 +131,9 @@ const usersSlice = createSlice({
       state.userObj = null;
       state.errMessage = '';
     },
+    toggleLoading: (state, action: PayloadAction<boolean>) => {
+      state.isLoading = action.payload
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -169,5 +170,5 @@ const usersSlice = createSlice({
   },
 });
 
-export const { updateUser, deleteUser, resetUserState } = usersSlice.actions;
+export const { deleteUser, resetUserState, toggleLoading } = usersSlice.actions;
 export const usersReducer = usersSlice.reducer;

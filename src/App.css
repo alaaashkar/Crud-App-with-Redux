@@ -1,3 +1,8 @@
+a {
+  color: unset !important;
+  text-decoration: unset !important;
+}
+
 .delete-wrapper {
   display: flex;
   width: 100%;
@@ -49,9 +54,4 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-}
-
-a {
-  color: unset !important;
-  text-decoration: none !important;
 }

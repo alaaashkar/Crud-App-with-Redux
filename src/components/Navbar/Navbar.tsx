@@ -2,25 +2,38 @@ import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../firebase";
 import { useDispatch } from "react-redux";
-import { resetUserState } from "../../state/UsersSlice";
+import { resetUserState, toggleLoading } from "../../state/UsersSlice";
+import './Navbar.css'
+
+
 
 export const Navbar = () => {
-  const navigate = useNavigate(); // Hook to get the navigate function
-  const dispatch = useDispatch()
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const signOutUser = () => {
-    signOut(auth).then(() => {
-      navigate('/signin')
-    })
-    dispatch(resetUserState())
-  }
+    dispatch(toggleLoading(true));
+
+    // Delay the loading state change for visual effect
+    setTimeout(async () => {
+      try {
+        await signOut(auth);
+        dispatch(resetUserState());
+        navigate('/signin');
+      } catch (error) {
+        console.error('Sign out error:', error);
+      } finally {
+        dispatch(toggleLoading(false));
+      }
+    }, 2000);
+  };
 
   return (
-    <div className="container">
       <header>
-        <h2>Crud App with JSON Server</h2>
-        <button onClick={signOutUser} className="btn btn-danger">Sign out</button>
+        <h2></h2>
+        <button onClick={signOutUser} className="btn btn-danger">
+          Sign out
+        </button>
       </header>
-    </ div>
-  )
+  );
 };

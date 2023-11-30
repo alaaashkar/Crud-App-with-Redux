@@ -25,7 +25,7 @@ export const SignUp = () => {
         data: []
       });
 
-      navigate('/signin')
+      navigate('/')
 
       console.log('success');
 

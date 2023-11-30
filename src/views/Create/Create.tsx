@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { fetchUserList, postUser } from "../../state/UsersSlice";
+import { postUser } from "../../state/UsersSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../state/store";
 import { useNavigate } from 'react-router-dom';
-import { ClipLoader } from 'react-spinners';
+import { motion } from 'framer-motion'
+import './Create.css';
 
 export const Create = () => {
   const [name, setName] = useState('')
@@ -22,8 +23,10 @@ export const Create = () => {
   }
 
   return (
-    <div className="container">
-      <div className="row justify-content-center align-items-center min-vh-100">
+    <div
+      className="container create-page "
+    >
+      <div className="row justify-content-center align-items-center min-vh-100 animate__animated animate__faster animate__fadeIn">
         <div className="col-md-6">
           <div className="border bg-secondary text-white p-5 ">
             <h3 className="mb-4">Add New User</h3>
@@ -36,7 +39,7 @@ export const Create = () => {
 
               <div className="mb-3">
                 <label htmlFor="email" className="form-label">Email:</label>
-                <input onChange={e => setEmail(e.target.value)} type="text" name="email" className="form-control" placeholder="Enter email" />
+                <input onChange={e => setEmail(e.target.value)} type="email" name="email" className="form-control" placeholder="Enter email" />
               </div>
 
               <div className="mb-3">
