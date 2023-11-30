@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/crud-app-with-redux/static/css/main.0db2a21d.css",
-    "main.js": "/crud-app-with-redux/static/js/main.729a0695.js",
-    "static/js/787.d4aba7ab.chunk.js": "/crud-app-with-redux/static/js/787.d4aba7ab.chunk.js",
-    "static/media/AdobeStock_292103219.jpeg": "/crud-app-with-redux/static/media/AdobeStock_292103219.641e2122faec782e36db.jpeg",
-    "static/media/Inter-Regular.ttf": "/crud-app-with-redux/static/media/Inter-Regular.9ca9ba81e9dcaa12b3a1.ttf",
-    "index.html": "/crud-app-with-redux/index.html",
-    "main.0db2a21d.css.map": "/crud-app-with-redux/static/css/main.0db2a21d.css.map",
-    "main.729a0695.js.map": "/crud-app-with-redux/static/js/main.729a0695.js.map",
-    "787.d4aba7ab.chunk.js.map": "/crud-app-with-redux/static/js/787.d4aba7ab.chunk.js.map"
+    "main.css": "/crud-app-with-redux-and-firebase/static/css/main.0c2e737e.css",
+    "main.js": "/crud-app-with-redux-and-firebase/static/js/main.a3c1e6d0.js",
+    "static/js/787.d4aba7ab.chunk.js": "/crud-app-with-redux-and-firebase/static/js/787.d4aba7ab.chunk.js",
+    "static/media/AdobeStock_292103219.jpeg": "/crud-app-with-redux-and-firebase/static/media/AdobeStock_292103219.641e2122faec782e36db.jpeg",
+    "static/media/Inter-Regular.ttf": "/crud-app-with-redux-and-firebase/static/media/Inter-Regular.9ca9ba81e9dcaa12b3a1.ttf",
+    "index.html": "/crud-app-with-redux-and-firebase/index.html",
+    "main.0c2e737e.css.map": "/crud-app-with-redux-and-firebase/static/css/main.0c2e737e.css.map",
+    "main.a3c1e6d0.js.map": "/crud-app-with-redux-and-firebase/static/js/main.a3c1e6d0.js.map",
+    "787.d4aba7ab.chunk.js.map": "/crud-app-with-redux-and-firebase/static/js/787.d4aba7ab.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.0db2a21d.css",
-    "static/js/main.729a0695.js"
+    "static/css/main.0c2e737e.css",
+    "static/js/main.a3c1e6d0.js"
   ]
 }
