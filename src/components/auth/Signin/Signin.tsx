@@ -10,17 +10,21 @@ export const Signin = () => {
   const [password, setPassword] = useState('');
   const navigate = useNavigate(); // Hook to get the navigate function
   const [isLoading, setIsLoading] = useState(false);
+  const [hasWrongCredentialsError, setHasWrongCredentialError] = useState('');
 
   const signIn = async (e: FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
     try {
       await signInWithEmailAndPassword(auth, email, password);
+      setIsLoading(true);
       navigate('/');
     } catch (error) {
-      console.error('Sign in error:', error);
-    } finally {
+      setHasWrongCredentialError('Invalid Email or Password. Please try again.');
     }
+
+    setTimeout(() => {
+      setHasWrongCredentialError('')
+    }, 3000);
   };
 
   return (
@@ -46,6 +50,9 @@ export const Signin = () => {
               <Link to='/signup'>Create Account</Link>
             </button>
           </div>
+          {hasWrongCredentialsError && (
+            <p className='alert alert-danger mt-3'>{hasWrongCredentialsError}</p>
+          )}
         </form>
       )}
     </div>

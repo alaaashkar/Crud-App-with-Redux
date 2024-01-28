@@ -3,7 +3,6 @@ import { postUser } from "../../state/UsersSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../state/store";
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion'
 import './Create.css';
 
 export const Create = () => {
@@ -13,7 +12,7 @@ export const Create = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
-  const handleSubmit = async (event: React.FormEvent) => {
+  const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault()
     const lastUserId = users.userList?.length > 0 ? users.userList[users.userList.length - 1].id : 0
     const id = lastUserId + 1;
@@ -27,8 +26,8 @@ export const Create = () => {
       className="container create-page "
     >
       <div className="row justify-content-center align-items-center min-vh-100 animate__animated animate__faster animate__fadeIn">
-        <div className="col-md-6">
-          <div className="border bg-secondary text-white p-5 ">
+        <div className="col-md-8 sm-4">
+          <div className="border bg-secondary text-white p-5">
             <h3 className="mb-4">Add New User</h3>
 
             <form onSubmit={handleSubmit}>

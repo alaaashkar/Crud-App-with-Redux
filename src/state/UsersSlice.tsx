@@ -1,4 +1,4 @@
-import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
 import axios from "axios";
 import { api } from "../services/http";
 import { addDoc, arrayUnion, collection, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
@@ -72,11 +72,10 @@ export const deleteUserFromServer = createAsyncThunk<void, number>(
   async (userId) => {
     try {
       const userDocRef = doc(db, 'users', auth.currentUser?.email || '')
-
       const userDocSnapshot = await getDoc(userDocRef);
       const existingDataArray = userDocSnapshot.data()?.data || [];
 
-      const updatedDataArray = existingDataArray.filter((user: { id: number; }) => user.id !== userId)
+      const updatedDataArray = existingDataArray.filter((user: UserItem) => user.id !== userId)
 
       await updateDoc(userDocRef, { data: updatedDataArray });
     } catch (error) {
@@ -94,7 +93,7 @@ export const updateUsersOnServer = createAsyncThunk<UserItem, UserItem>(
       const userDocSnapshot = await getDoc(userDocRef);
       const existingDataArray = userDocSnapshot.data()?.data || [];
 
-      const updatedDataArray = existingDataArray.map((user: { id: number }) => {
+      const updatedDataArray = existingDataArray.map((user: UserItem) => {
         if (user.id === updatedUser.id) {
           return { ...user, ...updatedUser }
         } else {
@@ -159,10 +158,11 @@ const usersSlice = createSlice({
       })
       .addCase(updateUsersOnServer.rejected, (state) => {
         state.loading = false;
-        state.errMessage = 'Failed to update user';
+        state.errMessage = 'Failed to update users';
       })
   },
 });
 
 export const { deleteUser, resetUserState, toggleLoading } = usersSlice.actions;
 export const usersReducer = usersSlice.reducer;
+

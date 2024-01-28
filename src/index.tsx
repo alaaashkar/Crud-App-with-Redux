@@ -1,4 +1,3 @@
-import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
@@ -7,9 +6,6 @@ import { store } from './state/store'
 import { HashRouter } from 'react-router-dom';
 import './index.css'
 import 'animate.css'
-
-
-
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const root = ReactDOM.createRoot(
