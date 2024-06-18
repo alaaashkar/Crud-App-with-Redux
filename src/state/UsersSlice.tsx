@@ -14,7 +14,6 @@ export interface InitialType {
   userObj?: UserItem | null;
   errMessage: string;
   isLoading: boolean
-  bla: string
 }
 
 export interface UserItem {
