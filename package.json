@@ -1,7 +1,7 @@
 {
   "name": "my-app",
   "version": "0.1.0",
-  "homepage": "https://alaaashkar.github.io/crud-app-with-redux",
+  "homepage": "https://alaaashkar.github.io/crud-app-with-redux-and-firebase",
   "private": true,
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.7",

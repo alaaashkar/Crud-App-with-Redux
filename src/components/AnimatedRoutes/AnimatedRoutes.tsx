@@ -35,30 +35,30 @@ export const AnimatedRoutes = () => {
   }
 
   return (
-      <Routes >
-        {authUser ? (
-          <>
-            {/* Authenticated routes */}
-            <Route
-              path="/"
-              element={<Layout />}
-            >
-              <Route index element={<Home />} />
-              <Route path="/create" element={<Create />} />
-              <Route path="/edit/:id" element={<Update />} />
-            </Route>
-          </>
-        ) : (
-          <>
-            {/* Unauthenticated routes */}
-            <Route
-              path="/"
-              element={<Navigate to="/signin" />}
-            />
-            <Route path="/signup" element={<SignUp />} />
-            <Route path="/signin" element={<Signin />} />
-          </>
-        )}
-      </Routes>
+    <Routes >
+      {authUser ? (
+        <>
+          {/* Authenticated routes */}
+          <Route
+            path="/"
+            element={<Layout />}
+          >
+            <Route index element={<Home />} />
+            <Route path="/create" element={<Create />} />
+            <Route path="/edit/:id" element={<Update />} />
+          </Route>
+        </>
+      ) : (
+        <>
+          {/* Unauthenticated routes */}
+          <Route
+            path="/"
+            element={<Navigate to="/signin" />}
+          />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/signin" element={<Signin />} />
+        </>
+      )}
+    </Routes>
   );
 };

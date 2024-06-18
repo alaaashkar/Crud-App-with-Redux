@@ -14,6 +14,7 @@ export interface InitialType {
   userObj?: UserItem | null;
   errMessage: string;
   isLoading: boolean
+  bla: string
 }
 
 export interface UserItem {
@@ -27,7 +28,8 @@ const initialState: InitialType = {
   userList: [],
   userObj: null,
   errMessage: '',
-  isLoading: false
+  isLoading: false,
+
 }
 
 export const fetchUserList = createAsyncThunk<UserItem[]>(
@@ -154,6 +156,7 @@ const usersSlice = createSlice({
         if (foundUser) {
           foundUser.name = action.payload.name;
           foundUser.email = action.payload.email;
+
         }
       })
       .addCase(updateUsersOnServer.rejected, (state) => {

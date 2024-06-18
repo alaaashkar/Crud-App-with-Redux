@@ -4,7 +4,6 @@ import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import { store } from './state/store'
 import { HashRouter } from 'react-router-dom';
-import './index.css'
 import 'animate.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
